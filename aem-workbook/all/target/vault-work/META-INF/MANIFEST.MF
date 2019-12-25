@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Implementation-Title: aem-workbook - All
+Content-Package-Roots: /apps/aem-workbook-packages,/apps/aem-workbook-
+ vendor-packages
+Implementation-Version: 1.0-SNAPSHOT
+Built-By: Sandeep
+Implementation-Vendor-Id: com.sandeepjvv
+Content-Package-Type: application
+Created-By: Apache Maven
+Build-Jdk: 1.8.0_121
+Content-Package-Description: All content package for aem-workbook
+Content-Package-Id: aem-workbook:aem-workbook.all:1.0-SNAPSHOT
+

@@ -1,0 +1,5 @@
+com\sandeepjvv\core\filters\LoggingFilterTest.class
+com\sandeepjvv\core\schedulers\SimpleScheduledTaskTest.class
+com\sandeepjvv\core\models\HelloWorldModelTest.class
+com\sandeepjvv\core\listeners\SimpleResourceListenerTest.class
+com\sandeepjvv\core\servlets\SimpleServletTest.class

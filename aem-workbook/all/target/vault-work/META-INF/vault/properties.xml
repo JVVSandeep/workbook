@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>aem-workbook - All</comment>
+<entry key="createdBy">Sandeep</entry>
+<entry key="allowIndexDefinitions">false</entry>
+<entry key="name">aem-workbook.all</entry>
+<entry key="created">2019-12-25T14:20:07.021+05:30</entry>
+<entry key="groupId">com.sandeepjvv</entry>
+<entry key="version">1.0-SNAPSHOT</entry>
+<entry key="packageType">application</entry>
+<entry key="requiresRoot">false</entry>
+<entry key="group">aem-workbook</entry>
+<entry key="description">All content package for aem-workbook</entry>
+<entry key="artifactId">aem-workbook.all</entry>
+</properties>

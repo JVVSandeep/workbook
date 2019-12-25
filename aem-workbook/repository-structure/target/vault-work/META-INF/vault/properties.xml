@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>aem-workbook - Adobe Experience Manager Repository Structure Package</comment>
+<entry key="createdBy">Sandeep</entry>
+<entry key="allowIndexDefinitions">false</entry>
+<entry key="name">aem-workbook.repository-structure</entry>
+<entry key="created">2019-12-25T14:20:03.807+05:30</entry>
+<entry key="groupId">com.sandeepjvv</entry>
+<entry key="version">1.0-SNAPSHOT</entry>
+<entry key="packageType">application</entry>
+<entry key="requiresRoot">false</entry>
+<entry key="group">com.sandeepjvv</entry>
+<entry key="description">Empty package that defines the structure of the Adobe Experience Manager repository the Code packages in this project deploy into.
+        Any roots in the Code packages of this project should have their parent enumerated in the Filters list below.</entry>
+<entry key="artifactId">aem-workbook.repository-structure</entry>
+</properties>

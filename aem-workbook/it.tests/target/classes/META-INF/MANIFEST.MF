@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1577044591267
+Bundle-Category: aem-workbook
+Bundle-Description: "Bundles for Integration Tests for aem-workbook"
+Bundle-ManifestVersion: 2
+Bundle-Name: aem-workbook - Integration Tests Bundles
+Bundle-SymbolicName: aem-workbook.it.tests
+Bundle-Version: 1.0.0.20191222195631267
+Created-By: 1.8.0_121 (Oracle Corporation)
+Export-Package: com.sandeepjvv.it.tests;version="1.0";uses:="org.apach
+ e.sling.junit.annotations,org.junit,org.junit.runner"
+Import-Package: com.sandeepjvv.core.models;version="[1.0,2)",org.apach
+ e.sling.api.resource;version="[2.11,3)",org.apache.sling.junit.annota
+ tions;version="[1.0,2)",org.apache.sling.settings;version="[1.3,2)",o
+ rg.junit;version="[4.12,5)",org.junit.runner;version="[4.12,5)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Sling-Test-Regexp: .*Test
+Tool: Bnd-4.2.0.201903051501
+

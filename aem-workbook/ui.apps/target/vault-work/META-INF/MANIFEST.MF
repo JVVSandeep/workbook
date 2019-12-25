@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Implementation-Title: aem-workbook - UI apps
+Implementation-Version: 1.0-SNAPSHOT
+Built-By: Sandeep
+Implementation-Vendor-Id: com.sandeepjvv
+Content-Package-Dependencies: adobe/cq60:core.wcm.components.content:2
+ .7.0,adobe/cq60:core.wcm.components.config:2.7.0
+Import-Package: com.adobe.cq.sightly;version="[3.2.0,4.0.0)",org.apach
+ e.sling.api;version="[2.3.3,3.0.0)",org.apache.sling.scripting.sightl
+ y.pojo;version="[1.0.1,2.0.0)"
+Content-Package-Type: application
+Content-Package-Description: UI apps package for aem-workbook
+Content-Package-Roots: /apps/aem-workbook
+Created-By: Apache Maven
+Build-Jdk: 1.8.0_121
+Content-Package-Id: com.sandeepjvv:aem-workbook.ui.apps:1.0-SNAPSHOT
+
