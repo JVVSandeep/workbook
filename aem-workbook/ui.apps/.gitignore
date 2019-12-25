@@ -2,3 +2,4 @@
 
 src/main/content/jcr_root/apps/aem-workbook/clientlibs/clientlib-site
 src/main/content/jcr_root/apps/aem-workbook/clientlibs/clientlib-dependencies
+/target/

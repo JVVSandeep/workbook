@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1577044591267
+Bnd-LastModified: 1577268052995
 Bundle-Category: aem-workbook
 Bundle-Description: "Bundles for Integration Tests for aem-workbook"
 Bundle-ManifestVersion: 2
 Bundle-Name: aem-workbook - Integration Tests Bundles
 Bundle-SymbolicName: aem-workbook.it.tests
-Bundle-Version: 1.0.0.20191222195631267
+Bundle-Version: 1.0.0.20191225100052995
 Created-By: 1.8.0_121 (Oracle Corporation)
 Export-Package: com.sandeepjvv.it.tests;version="1.0";uses:="org.apach
  e.sling.junit.annotations,org.junit,org.junit.runner"
