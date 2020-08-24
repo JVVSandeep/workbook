@@ -85,8 +85,10 @@ public class SimpleServlet extends SlingSafeMethodsServlet {
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
             throws ServletException, IOException {
 
-        String url = request.getParameter("url");
-        JSONArray arrayData = getSiteMapData(url);
+      String url = request.getParameter("url");
+        int start = Integer. parseInt(request.getParameter("start") != null ? request.getParameter("start") : "0");
+        int end = Integer. parseInt(request.getParameter("end") != null ? request.getParameter("end") : "0");
+        JSONArray arrayData = getSiteMapData(url, start, end);
         response.setContentType("application/json");
         if (arrayData.length() > 0) {
             response.getWriter().print(arrayData);
@@ -95,7 +97,7 @@ public class SimpleServlet extends SlingSafeMethodsServlet {
         }
     }
 
-    private JSONArray getSiteMapData(String url) {
+    private JSONArray getSiteMapData(String url, int start, int end) {
         HttpClient httpClient = HttpClientBuilder.create().build();
         String apiOutput = StringUtils.EMPTY;
         JSONArray urlList = new JSONArray();
@@ -123,17 +125,17 @@ public class SimpleServlet extends SlingSafeMethodsServlet {
                 // Lets see what we got from API
                 NodeList nodeList = doc.getElementsByTagName("url");
                 // nodeList is not iterable, so we are using for loop
-                for (int itr = 0; itr < nodeList.getLength(); itr++) {
+                if(end > nodeList.getLength()){
+                    end = nodeList.getLength();
+                }
+                for (int itr = start; itr < end; itr++) {
                     Node node = nodeList.item(itr);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element eElement = (Element) node;
                         JSONObject obj = new JSONObject();
                         obj.put("URL", eElement.getElementsByTagName("loc").item(0).getTextContent());
-                        URL pageUrl = new URL(eElement.getElementsByTagName("loc").item(0).getTextContent());
-                        HttpURLConnection connection = (HttpURLConnection) pageUrl.openConnection();
-                        obj.put("Response", connection.getResponseCode());
+                        obj.put("Response", getHttpUrlConnection(eElement));
                         urlList.put(obj);
-                        connection.disconnect();
                     }
                 }
             }
@@ -145,5 +147,19 @@ public class SimpleServlet extends SlingSafeMethodsServlet {
             LOG.info("HTTP Client Connection Shutdown");
         }
         return urlList;
+    }
+
+    private String getHttpUrlConnection(Element eElement) throws IOException {
+        String responceCode = StringUtils.EMPTY;
+        try {
+            URL pageUrl = new URL(eElement.getElementsByTagName("loc").item(0).getTextContent());
+            HttpURLConnection connection = (HttpURLConnection) pageUrl.openConnection();
+            responceCode = Integer.toString(connection.getResponseCode());
+            connection.disconnect();
+        } catch (Exception e) {
+            LOG.error("Exception at ValidateSiteMap  :: {}", e);
+            responceCode = e.toString();
+        }
+        return responceCode;
     }
 }
