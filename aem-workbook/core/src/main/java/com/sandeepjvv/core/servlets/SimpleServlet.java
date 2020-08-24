@@ -15,6 +15,40 @@
  */
 package com.sandeepjvv.core.servlets;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.osgi.service.component.annotations.Component;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import java.io.IOException;
+
+import org.apache.http.client.HttpClient;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import org.json.JSONObject;
+import org.json.JSONArray;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.day.cq.commons.jcr.JcrConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -44,13 +78,72 @@ import java.io.IOException;
 @ServiceDescription("Simple Demo Servlet")
 public class SimpleServlet extends SlingSafeMethodsServlet {
 
-    private static final long serialVersionUID = 1L;
+     private static final long serialVersionUID = 814031998439878299L;
+    private static final Logger LOG = LoggerFactory.getLogger(ValidateSiteMap.class);
 
     @Override
-    protected void doGet(final SlingHttpServletRequest req,
-            final SlingHttpServletResponse resp) throws ServletException, IOException {
-        final Resource resource = req.getResource();
-        resp.setContentType("text/plain");
-        resp.getWriter().write("Title = " + resource.getValueMap().get(JcrConstants.JCR_TITLE) +"test");
+    protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
+            throws ServletException, IOException {
+
+        String url = request.getParameter("url");
+        JSONArray arrayData = getSiteMapData(url);
+        response.setContentType("application/json");
+        if (arrayData.length() > 0) {
+            response.getWriter().print(arrayData);
+        } else {
+            response.getWriter().print("Please check the SiteMap URL");
+        }
+    }
+
+    private JSONArray getSiteMapData(String url) {
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        String apiOutput = StringUtils.EMPTY;
+        JSONArray urlList = new JSONArray();
+        try {
+            HttpGet getRequest = new HttpGet(url);
+            HttpResponse getResponse = httpClient.execute(getRequest);
+            // Set the API media type in http accept header
+            getRequest.addHeader("accept", "application/xml");
+            // Send the request; It will immediately return the response in HttpResponse
+            getResponse = httpClient.execute(getRequest);
+            // verify the valid error code first
+            int statusCode = getResponse.getStatusLine().getStatusCode();
+            if (statusCode != 200) {
+                LOG.info(" The Status Code for the XML Sitemap URL :: {} is :: {}", url, statusCode);
+            } else {
+                LOG.info(" The Status Code for the XML Sitemap URL :: {} is :: {}", url, statusCode);
+                // Now pull back the response object
+                HttpEntity httpEntity = getResponse.getEntity();
+                // an instance of factory that gives a document builder
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                // an instance of builder to parse the specified xml file
+                DocumentBuilder db = dbf.newDocumentBuilder();
+                Document doc = db.parse(httpEntity.getContent());
+                doc.getDocumentElement().normalize();
+                // Lets see what we got from API
+                NodeList nodeList = doc.getElementsByTagName("url");
+                // nodeList is not iterable, so we are using for loop
+                for (int itr = 0; itr < nodeList.getLength(); itr++) {
+                    Node node = nodeList.item(itr);
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) node;
+                        JSONObject obj = new JSONObject();
+                        obj.put("URL", eElement.getElementsByTagName("loc").item(0).getTextContent());
+                        URL pageUrl = new URL(eElement.getElementsByTagName("loc").item(0).getTextContent());
+                        HttpURLConnection connection = (HttpURLConnection) pageUrl.openConnection();
+                        obj.put("Response", connection.getResponseCode());
+                        urlList.put(obj);
+                        connection.disconnect();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception at ValidateSiteMap  :: {}", e);
+        } finally {
+            // Important: Close the connect
+            httpClient.getConnectionManager().shutdown();
+            LOG.info("HTTP Client Connection Shutdown");
+        }
+        return urlList;
     }
 }
